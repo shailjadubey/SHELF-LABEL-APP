@@ -1,0 +1,1330 @@
+package Shelf_Label;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Scanner;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.bidi.log.Log;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.Reporter;
+
+import com.google.common.collect.ImmutableMap;
+
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.remote.MobileCapabilityType;
+
+public class Shelf_label_Home {
+	private static final URL NULL = null;
+	   static AppiumDriver driver;
+	   static Scanner s=new Scanner(System.in);
+	   public static void main(String[] args) throws InterruptedException
+	   {
+	   	
+	   	   System.out.println("Launching app in device");	
+	   	     DesiredCapabilities dc=new DesiredCapabilities();
+	   	     dc.setCapability(MobileCapabilityType.AUTOMATION_NAME, "Appium");
+	   	     dc.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
+	   	     dc.setCapability(MobileCapabilityType.DEVICE_NAME,"Galaxy J8" );
+	   	     dc.setCapability(MobileCapabilityType.PLATFORM_VERSION, "10");
+	   	  dc.setCapability("appPackage","com.company.shelflabelsQA");
+	   	 	dc.setCapability("appActivity","com.company.shelflabels.app.WelcomeActivity");
+	   	 	dc.setCapability("noReset", "true");
+	   	 URL server_url=NULL;
+	   	 try
+	   	 	{
+	   	 	server_url= new URL("http://127.0.0.1:4723/wd/hub");
+	   	 	System.out.println("Server connected");
+	   	 	}
+	   	 	catch(MalformedURLException e)
+	   	 	{
+	   	 	System.out.println("Server not found");	
+	   	 	System.out.println(e.getMessage());
+	   	 	}
+	   	 	Thread.sleep(8000);
+	   	   
+	   	   driver=new AndroidDriver(server_url,dc);
+	   	   dc.setCapability("newCommandTimeout", 10);
+	   	   System.out.println("Creating Driver for android with all Desired capability and server URL");
+	   		System.out.println("App open");
+	   		System.out.println("1st screen start");
+	   		//Test case1- Verify user is on Home page
+	   		Home_test();
+	   	    //Test Case2- Verify store name and ID
+	   		store_name_id();
+	   		//Test case3-to enter barcode 
+	   		Barcode_input();
+	   		//Test case4- to check correct barcode display or not 
+	   		Barcode_check();
+	   		//Test case 5-Verify user click on next
+	   		next_input();
+	   	    //Test Case 6-Click on Display Dropdown
+	   		display_click();
+	   		//Test case 7- User should select display type as All
+	   		Display_all();
+	   		//Test case 8-Check brand name display or not
+	   		Brand();
+	   		//Test case 9-Check Description display or not
+	   		Description();
+	   		//Test case 10-Check RSP display or not
+	   		RSP();
+	   		//Test case 11-Check % discount is display or not
+	   		discount();
+	   		//Test case12-Check promo display or not
+	   		promo();
+	   		//Test case 13-Check promo qty display or not
+	   		promo_qty();
+	   		//Test case 14-Verify in Print Qty atleast 1 should be enter as default value
+	   		Print_qty_one();
+	   		//Test case 15-Verify User should enter Print qty 
+	   		Print_qty_input();
+	   		//Test case 16-Verify Print qty should display as same as enter by user 
+	   		check_print_qty();
+	   		//Test case 17-Verify Brand name should display correct 
+	   		check_brand();
+	   		//Test case18- Verify Description should display correct
+	   		check_description();
+	   		//Test case19-Verify % discount should display correct
+	   		check_discount();
+	   		//Test case 20-Verify RSP $ VALUE SHOULD DISPLAY CORRECT
+	   		check_RSP();
+	   		//Test case21-Verify Promo $ value should display correct
+	   		check_promo();
+	   		//Test case22- Verify Promo qty should display correct
+	   		check_promo_qty();
+	   		//Test Case23- Verify Add button should work after enter all details
+	   		Add_button();
+	   		//Test case 24-Verify User successfully click on Add button 
+	   		Add_button_check();
+	   	   //Test case 25-Verify after item added to list barcode/sku value should removed 
+	   		after_add_barcode();
+	   		//Test case 26-Verify after item added to list brand value should removed 
+	   		after_add_brand();
+	   	   //Test case 27-Verify after item added to list Description value should removed 
+	   		after_add_description();
+	   	//Test case 28-Verify after item added to list RSP$ value should removed 
+	   		after_add_RSP$();
+	   		//Test Case 29-Verify after item added to list Promo$ value should removed 
+	   		after_add_Promo$();
+	   	//Test Case 30-Verify after item added to list Discount % value should removed 
+	   		after_add_disc();
+	   	//Test Case 31-Verify after item added to list Promo Qty value should removed 
+	   		after_add_promo_qty();	
+	   	//Test Case 32-Verify after item added to list Print Qty value should removed 
+	   		after_add_Print_qty();	
+	   		//Test Case 33-Verify list button should work on user click 
+	   		list();
+	   		//Test case 34-Verify User successfully click on List button
+	   		Check_list();
+	   		//Test Case 35-Verify Clear All button should be clickable
+	   		clear_all_button_click();
+	     	//Test case 36-Verify From list screen back button should be clickable
+	   		back_btn_click();
+	   		//Test case 37-Verify From list screen user should click on back button
+	   		back_btn();
+	   		//Test Case 38-Verify after click on back button user should navigates to previous page 
+	   		back_navgn();
+	   		//Test case 39-Verify user should click on Clear All button
+	   		clear_all();
+	   		//Test case 40-Verify after click on Clear All button , Confirmation popup should display
+	   		Confirm_popup_box();
+	   		//Test case 41-Verify Popup title should display as "Are you sure you want to clear all the list? "
+	   		Popup_title();
+	   	   //Test case 42-Verify Ok option should display in Confirmation Popup box
+	   		ok_btn();
+	   		//Test case 43-Verify user should click on Ok button
+	   		Ok_click();
+	   		//Test case 44-Verify after click on Ok Confirmation Popup should close
+	   		popup_close_check();
+	   		//Test case 45-Verify after click on Clear All item from list and after click on clear all button again nothing should happen to list 
+	   		after_clear_btn();
+	   		//Test Case 46- Verify after click on clear All , and click on List button user should not moved to next page as list have no items
+	   		after_clear_list_btn();
+	   		//Test case 47- Verify No option should display in Confirmation Popup box 
+	   		No_btn();
+	   		//Test case 48- Verify user should click on No button
+            No_click();
+            //Test case 49- Verify after click on No Confirmation Popup should close
+            popup_close_check_afterno();
+            //Test case 50-Verify if click on Clear All button again, Popup should open as list have items 
+            after_no_clear_list();
+            //Test case 51-Verify if click on No from popup , for 2nd time clear all button should be enabled
+            check_clearall_visiblity();
+            //Test case 52-Verify if click on List button, user should navigates to next screen as no item deleted from list
+            after_no_navigation_list();
+            //Test case 53-Verify click on add button without enter any barcode user should not navigates to next screen
+            no_barcode_add_btn();
+            //Test case 54- Verify on Print screen , Clear All button should be enabled 
+            print_screen_clear();
+            //Test case 55- Verify on Print screen , List button should be enabled 
+            print_screen_list();
+          //Test case 56- Verify on Print screen , Back button should be enabled 
+            print_screen_back();
+            //Test case 57-Verify on Print screen , Print button should be enabled 
+            print_screen_printbtn();
+            //Test case 58-Verify Item Scanned should display on print screen
+            Item_scanned();
+}
+	  
+	private static void Item_scanned() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			boolean itemscanned=driver.findElement(By.id("com.company.shelflabelsQA:id/tvNoOfItems")).isDisplayed();
+			boolean expected=true;
+			if(itemscanned==expected)
+			{
+				System.out.println("Test Case 58 Pass-Item scanned  successfully display on Print screen");
+			}
+			else
+			{
+				System.out.println("Test Case 58 Fail- Item scanned not display on Print screen ");
+			}
+			}	
+			catch(Exception e)
+			{
+				System.out.println("Test Case 58 Fail- Item scanned not display on Print screen");
+			}
+	}
+
+	private static void print_screen_printbtn() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			boolean btn4=driver.findElement(By.id("com.company.shelflabelsQA:id/btnPrint")).isEnabled();
+			boolean expected=true;
+			if(btn4==expected)
+			{
+				System.out.println("Test Case 57 Pass-Print button present on print screen is enabled");
+			}
+			else
+			{
+				System.out.println("Test Case 57 Fail- Print button is not enabled ");
+			}
+			}	
+			catch(Exception e)
+			{
+				System.out.println("Test Case 57 Fail- Print button is not enabled ");
+			}
+	}
+
+	private static void print_screen_back() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			boolean btn3=driver.findElement(By.id("com.company.shelflabelsQA:id/btnBack")).isEnabled();
+			boolean expected=true;
+			if(btn3==expected)
+			{
+				System.out.println("Test Case 56 Pass-Back button present on print screen is enabled");
+			}
+			else
+			{
+				System.out.println("Test Case 56 Fail- Back button is not enabled ");
+			}
+			}	
+			catch(Exception e)
+			{
+				System.out.println("Test Case 56 Fail- Back button is not enabled ");
+			}
+	}
+
+	private static void print_screen_list() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			boolean btn2=driver.findElement(By.id("com.company.shelflabelsQA:id/btnList")).isEnabled();
+			boolean expected=true;
+			if(btn2==expected)
+			{
+				System.out.println("Test Case 55 Pass-List button present on print screen is enabled");
+			}
+			else
+			{
+				System.out.println("Test Case 55 Fail- List button is not enabled ");
+			}
+			}	
+			catch(Exception e)
+			{
+				System.out.println("Test Case 55 Fail- List button is not enabled ");
+			}
+	}
+
+	private static void print_screen_clear() {
+		// TODO Auto-generated method stub
+		try
+		{
+		Thread.sleep(3000);
+		//1st click on list 
+		driver.findElement(By.id("com.company.shelflabelsQA:id/btnList")).click();
+		Thread.sleep(3000);
+		//check clear all button
+		boolean btn1=driver.findElement(By.id("com.company.shelflabelsQA:id/btnClealAll")).isEnabled();
+		boolean expected=true;
+		if(btn1==expected)
+		{
+			System.out.println("Test Case 54 Pass-Clear All button present on print screen is enabled");
+		}
+		else
+		{
+			System.out.println("Test Case 54 Fail- Clear All button is not enabled ");
+		}
+		}	
+		catch(Exception e)
+		{
+			System.out.println("Test Case 54 Fail- Clear All button is not enabled ");
+		}
+	}
+
+	private static void no_barcode_add_btn() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			//Click on back button
+			driver.findElement(By.id("com.company.shelflabelsQA:id/btnBack")).click();
+			Thread.sleep(3000);
+			driver.findElement(By.id("com.company.shelflabelsQA:id/btnAdd")).click();
+			Thread.sleep(3000);
+			boolean title=driver.findElement(By.id("com.company.shelflabelsQA:id/tvBarcodesku")).isDisplayed();
+			boolean expected=true;
+			if(title==expected)
+			{
+				System.out.println("Test case 53 Pass- Add button is freeze ");
+			}
+			else
+			{
+				System.out.println("Test case 53 Fail- Add button functionality is incorrect");
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test case 53 Fail- Add button functionality is incorrect");
+	}	
+	}
+
+	private static void after_no_navigation_list() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			driver.findElement(By.id("com.company.shelflabelsQA:id/btnList")).click();
+			boolean title=driver.findElement(By.id("com.company.shelflabelsQA:id/tvNoOfItems")).isDisplayed();
+			boolean expected=true;
+			if(title==expected)
+			{
+				System.out.println("Test case 52 Pass-User navigated to next screen , after click on No from popup");
+			}
+			else
+			{
+				System.out.println("Test case 52 fail-User not navigated to next screen , after click on No from popup");
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test case 52 fail-User not navigated to next screen , after click on No from popup");
+	}
+	
+	}
+
+	private static void check_clearall_visiblity() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+		//1st click on no to close popup
+			driver.findElement(By.id("com.company.shelflabelsQA:id/btnContinueToCancel")).click();
+			Thread.sleep(3000);
+			boolean check=driver.findElement(By.id("com.company.shelflabelsQA:id/btnClealAll")).isEnabled();
+			boolean expected=true;
+			if(check==expected)
+			{
+				System.out.println("Test case 51 Pass- Clear all button is enabled after click on No from popup");
+			}
+			else
+			{
+				System.out.println("Test case 51 Fail-Clear All button is disable after click on No from popup");
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test case 51 Fail-Clear All button is disable after click on No from popup");
+		}
+	}
+
+	private static void after_no_clear_list() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			driver.findElement(By.id("com.company.shelflabelsQA:id/btnClealAll")).click();
+			Thread.sleep(3000);
+			boolean text=driver.findElement(By.id("com.company.shelflabelsQA:id/headerText")).isDisplayed();
+			boolean expected=true;
+			if(text==expected)
+			{
+				System.out.println("Test case 50 Pass- After click on NO button , still clear all button is clickable");
+			}
+			else
+			{
+				System.out.println("Test case 50 Fail- No Functionality is not working ");
+		}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test case 50 Fail- No Functionality is not working ");	
+		}
+	}
+
+	private static void popup_close_check_afterno() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			boolean popup_close=driver.findElement(By.id("com.company.shelflabelsQA:id/tvBarcodesku")).isDisplayed();
+			boolean expected=true;
+			if(popup_close==expected)
+			{
+				System.out.println("Test case 49 pass- Confirmation Popup close successfully");
+			}
+			else
+			{
+				System.out.println("Test case 49 Fail- Confirmation popup still display");
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test case 49 Fail- Confirmation popup still display");
+		}
+	}
+
+	private static void No_click() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			driver.findElement(By.id("com.company.shelflabelsQA:id/btnContinueToCancel")).click();
+			System.out.println("Test case 48 Pass- User successfully click on No button");
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test case 48 fail- User not click on No button");
+		}
+	}
+
+	private static void No_btn() {
+		// TODO Auto-generated method stub
+		//first add barcode to list
+		try
+		{
+			Thread.sleep(3000);
+		driver.findElement(By.id("com.company.shelflabelsQA:id/etBarcodeSku")).sendKeys("13181831");
+		Thread.sleep(3000);
+		//open keyboard
+		driver.findElement(By.id("com.company.shelflabelsQA:id/etBarcodeSku")).click();
+		Thread.sleep(3000);
+		//click on next button
+		driver.executeScript("mobile:performEditorAction", ImmutableMap.of("action", "Next"));
+		//click on add button
+		Thread.sleep(3000);
+		driver.findElement(By.id("com.company.shelflabelsQA:id/btnAdd")).click();
+		Thread.sleep(3000);
+		//Click on clear all button
+		driver.findElement(By.id("com.company.shelflabelsQA:id/btnClealAll")).click();
+		//check no button 
+		Thread.sleep(3000);
+		boolean no_btn=driver.findElement(By.id("com.company.shelflabelsQA:id/btnContinueToCancel")).isDisplayed();
+		boolean expected=true;
+		if(no_btn==expected)
+		{
+			System.out.println("Test case 47 Pass- No button successfully display on Confirmation popup ");
+		}
+		else
+			System.out.println("Test Case 47 fail- No button not found on popup ");
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test Case 47 fail- No button not found on popup ");
+		}
+	}
+
+	private static void after_clear_list_btn() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			//click on clear all button
+			driver.findElement(By.id("com.company.shelflabelsQA:id/btnList")).click();
+			Thread.sleep(3000);
+			boolean check_clearall_after_list=driver.findElement(By.id("com.company.shelflabelsQA:id/tvBarcodesku")).isDisplayed();
+			boolean expected=true;
+			if(check_clearall_after_list==expected)
+			{
+				System.out.println("Test case 46 pass- User not navigates to List screen as list is empty");
+			}
+			else
+			{
+				System.out.println("Test case 46 Fail- User navigates to next screen");
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test case 46 Fail- User navigates to next screen ");	
+		}
+	}
+
+	private static void after_clear_btn() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			//click on clear all button
+			driver.findElement(By.id("com.company.shelflabelsQA:id/btnClealAll")).click();
+			Thread.sleep(3000);
+			boolean cleck_clearall_after=driver.findElement(By.id("com.company.shelflabelsQA:id/tvBarcodesku")).isDisplayed();
+			boolean expected=true;
+			if(cleck_clearall_after==expected)
+			{
+				System.out.println("Test case 45 pass- List is already empty , Hence no item cleared from list");
+			}
+			else
+			{
+				System.out.println("Test case 45 Fail- Still list have some items ");
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test case 45 Fail- Still list have some items ");	
+		}
+	}
+
+	private static void popup_close_check() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			boolean popup_close=driver.findElement(By.id("com.company.shelflabelsQA:id/tvBarcodesku")).isDisplayed();
+			boolean expected=true;
+			if(popup_close==expected)
+			{
+				System.out.println("Test case 44 pass- Confirmation Popup close successfully");
+			}
+			else
+			{
+				System.out.println("Test case 44 Fail- Confirmation popup still display");
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test case 44 Fail- Confirmation popup still display");
+		}
+	}
+	private static void Ok_click() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			driver.findElement(By.id("com.company.shelflabelsQA:id/btnOk")).click();
+			System.out.println("Test case 43 Pass- User successfully click on Ok button");
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test case 44 Fail- Ok button not found");
+		}
+	}
+
+	private static void ok_btn() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+		  boolean ok_btn=driver.findElement(By.id("com.company.shelflabelsQA:id/btnOk")).isDisplayed();
+		  boolean expected_result=true;
+		  if(ok_btn==expected_result)
+		  {
+			  System.out.println("Test case 42 Pass-Ok option display on confirmation popup ");	  
+		  }
+		  else
+		  {
+			  System.out.println("Test case 42 fail-Ok option not display on confirmation popup");  
+		  }
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 42 fail-Ok option not display on confirmation popup ");	
+		   } 	
+	}
+
+	private static void Popup_title() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			String popup_title=driver.findElement(By.id("com.company.shelflabelsQA:id/headerText")).getText();
+			String expected_title="Are you sure you want to clear all the list?";
+			if(popup_title.equals(expected_title))
+			{
+				System.out.println("Test case 41 Pass-Popup title display correct as -"+popup_title);
+			}
+			else
+			{
+				System.out.println("Test case 41 fail-Incorrect popup tile display");
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test case 41 fail-Incorrect popup tile display");
+		}	
+	}
+
+	private static void Confirm_popup_box() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			boolean popup=driver.findElement(By.id("com.company.shelflabelsQA:id/headerText")).isDisplayed();
+			boolean expected=true;
+			if(popup==expected)
+			{
+				System.out.println("Test case 40 Pass-After click on Clear all button popup display");
+			}
+			else
+			{
+				System.out.println("Test case 40 fail-After click on Clear all button popup is not getting display");
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test case 40 fail-After click on Clear all button popup is not getting display");
+		}
+	}
+
+	private static void clear_all() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			driver.findElement(By.id("com.company.shelflabelsQA:id/btnClealAll")).click();
+			System.out.println("Test case 39 Pass- User click on clear All button");
+		}
+		catch(Exception e)
+		{
+			System.out.println("Test case 39 Fail- Clear all button is not click by user");
+		}
+	}
+
+	private static void back_navgn() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+			boolean preview=driver.findElement(By.id("com.company.shelflabelsQA:id/tvBarcodesku")).isDisplayed();
+			boolean expected_result=true;
+			if(preview==expected_result)
+			{
+				System.out.println("Test case 38 Pass-User naviagtes to previous page after click on back button");
+			}
+			else
+			{
+				System.out.println("Test case 38 fail-User still on same screen ");	
+			}
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 38 fail-User still on same screen ");	
+		   } 
+	}
+
+	private static void back_btn_click() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+		  boolean back_btn=driver.findElement(By.id("com.company.shelflabelsQA:id/btnBack")).isEnabled();
+		  boolean expected_result=true;
+		  if(back_btn==expected_result)
+		  {
+			  System.out.println("Test case 36 Pass-Back button is enabled and clickable ");	  
+		  }
+		  else
+		  {
+			  System.out.println("Test case 36 fail-Back button is not enabled and also not clickable ");  
+		  }
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 36 fail-Back button is not enabled and also not clickable ");	
+		   } 			
+	}
+
+	private static void back_btn() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+		  driver.findElement(By.id("com.company.shelflabelsQA:id/btnBack")).click();
+		  System.out.println("Test case 37 Pass-User successsfully click on back button");
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 37 Fail- Back button not found");
+		   }
+	}
+
+	private static void clear_all_button_click() {
+		// TODO Auto-generated method stub
+		try
+		{
+			Thread.sleep(3000);
+		  boolean clearAll_btn=driver.findElement(By.id("com.company.shelflabelsQA:id/btnClealAll")).isEnabled();
+		  boolean expected_result=true;
+		  if(clearAll_btn==expected_result)
+		  {
+			  System.out.println("Test case 35 Pass-Clear All button is enabled and clickable ");	  
+		  }
+		  else
+		  {
+			  System.out.println("Test case 35 fail-Clear All button is not enabled and also not clickable ");  
+		  }
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 35 fail-Clear All button is not enabled and also not clickable ");	
+		   } 	
+	}
+
+	private static void Check_list() {
+		// TODO Auto-generated method stub
+		try
+		{
+		   Thread.sleep(5000);
+		   boolean list_check_title=driver.findElement(By.id("com.company.shelflabelsQA:id/tvNoOfItems")).isDisplayed();
+		   boolean expected_result=true;
+		   if(list_check_title==expected_result)
+		   {
+			   System.out.println("Test case 34 Pass-User successfully click on List button and moved to next page ");	
+		   }
+		   else
+		   {
+			   System.out.println("Test case 34 fail-List button is not working  "); 
+		   }
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 34 fail-List button is not working ");	
+		   } 
+	}
+
+	private static void list() {
+		// TODO Auto-generated method stub
+		try
+		{
+		   Thread.sleep(5000);
+		   driver.findElement(By.id("com.company.shelflabelsQA:id/btnList")).click();
+		   
+			   System.out.println("Test case 33 Pass-User click on list button , list button working ");	
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 33 fail-List button not found ");	
+		   } 	
+	}
+
+	private static void after_add_Print_qty() {
+		// TODO Auto-generated method stub
+		try
+		{
+		   Thread.sleep(5000);
+		   String print_qty=driver.findElement(By.id("com.company.shelflabelsQA:id/etPrintQty2")).getText();
+		   if(print_qty.equals(""))
+		   {
+			   System.out.println("Test case 32 Pass- Print Qty value removed after click on add button");
+		   }
+		   else
+		   {
+			   System.out.println("Test case 32 fail-Print Qty value still display ");	
+		   }
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 32 fail-Print Qty value still display ");	
+		   } 	
+	}
+
+	private static void after_add_promo_qty() {
+		// TODO Auto-generated method stub
+		try
+		{
+		   Thread.sleep(5000);
+		   String promo_qty=driver.findElement(By.id("com.company.shelflabelsQA:id/tvpromoQty2")).getText();
+		   if(promo_qty.equals(""))
+		   {
+			   System.out.println("Test case 31 Pass- Promo Qty value removed after click on add button");
+		   }
+		   else
+		   {
+			   System.out.println("Test case 31 fail-Promo Qty value still display ");	
+		   }
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 31 fail-Promo Qty value still display ");	
+		   } 		
+	}
+
+	private static void after_add_disc() {
+		// TODO Auto-generated method stub
+		try
+		{
+		   Thread.sleep(5000);
+		   String Discount=driver.findElement(By.id("com.company.shelflabelsQA:id/tvDiscount2")).getText();
+		   if(Discount.equals(""))
+		   {
+			   System.out.println("Test case 30 Pass- Discount % value removed after click on add button");
+		   }
+		   else
+		   {
+			   System.out.println("Test case 30 fail-Discount % value still display ");	
+		   }
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 30 fail-Discount % value still display ");	
+		   } 	
+	}
+
+	private static void after_add_Promo$() {
+		// TODO Auto-generated method stub
+		try
+		{
+		   Thread.sleep(5000);
+		   String Promo$=driver.findElement(By.id("com.company.shelflabelsQA:id/tvpromo2")).getText();
+		   if(Promo$.equals(""))
+		   {
+			   System.out.println("Test case 29 Pass- Promo$ value removed after click on add button");
+		   }
+		   else
+		   {
+			   System.out.println("Test case 29 fail-Promo$ value still display ");	
+		   }
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 29 fail-Promo$ value still display ");	
+		   } 	
+	}
+
+	private static void after_add_RSP$() {
+		// TODO Auto-generated method stub
+		try
+		{
+		   Thread.sleep(5000);
+		   String RSP$=driver.findElement(By.id("com.company.shelflabelsQA:id/tvrsp2")).getText();
+		   if(RSP$.equals(""))
+		   {
+			   System.out.println("Test case 28 Pass- RSP$ value removed after click on add button");
+		   }
+		   else
+		   {
+			   System.out.println("Test case 28 fail-RSP$ value still display ");	
+		   }
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 28 fail-RSP$ value still display ");	
+		   } 	
+	}
+
+	private static void after_add_description() {
+		// TODO Auto-generated method stub
+		try
+		{
+		   Thread.sleep(5000);
+		   String brand=driver.findElement(By.id("com.company.shelflabelsQA:id/tvDescription2")).getText();
+		   if(brand.equals(""))
+		   {
+			   System.out.println("Test case 27 Pass- Description removed after click on add button");
+		   }
+		   else
+		   {
+			   System.out.println("Test case 27 fail-Description still display ");	
+		   }
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 27 fail-Description still display ");	
+		   }  	
+	}
+
+	private static void after_add_brand() {
+		// TODO Auto-generated method stub
+		try
+		{
+		   Thread.sleep(5000);
+		   String brand=driver.findElement(By.id("com.company.shelflabelsQA:id/tvBrand2")).getText();
+		   if(brand.equals(""))
+		   {
+			   System.out.println("Test case 26 Pass- Brand value removed after click on add button");
+		   }
+		   else
+		   {
+			   System.out.println("Test case 26 fail-Brand value still display ");	
+		   }
+		}
+		catch(Exception e)
+		   {
+			System.out.println("Test case 26 fail-Brand value still display ");	
+		   }  
+	}
+
+	private static void after_add_barcode() {
+		// TODO Auto-generated method stub
+		 try
+			{
+			   Thread.sleep(5000);
+			   String barcode=driver.findElement(By.id("com.company.shelflabelsQA:id/etBarcodeSku")).getText();
+			   if(barcode.equals(""))
+			   {
+				   System.out.println("Test case 25 Pass- Barcode/Sku value removed after click on add button");
+			   }
+			   else
+			   {
+				   System.out.println("Test case 25 fail-Barcode/Sku value still display ");	
+			   }
+			}
+			catch(Exception e)
+			   {
+				System.out.println("Test case 25 fail-Barcode/Sku value still display ");	
+			   }  	
+	}
+
+	private static void Add_button_check() {
+		// TODO Auto-generated method stub
+		    
+		   try
+			{
+			   Thread.sleep(5000);
+			   String blank_check=driver.findElement(By.id("com.company.shelflabelsQA:id/etBarcodeSku")).getText();
+			   if(blank_check.equals(""))
+			   {
+				   System.out.println("Test case 24 Pass- User successfully add item to list");
+			   }
+			   else
+			   {
+				   System.out.println("Test case 24 fail-Item not added to list ");	
+			   }
+			}
+			catch(Exception e)
+			   {
+				System.out.println("Test case 24 fail-Item not added to list ");	
+			   }  
+	}
+	private static void Add_button() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+			   driver.findElement(By.id("com.company.shelflabelsQA:id/btnAdd")).click();
+			   System.out.println("Test case 23 Pass- Add button is working and user click on button");
+			}
+			catch(Exception e)
+			   {
+				System.out.println("Test case 23 fail-Add button not found ");	
+			   }
+	}
+	private static void check_promo_qty() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+			   String Actual_promo_qty=driver.findElement(By.id("com.company.shelflabelsQA:id/tvpromoQty2")).getText();
+				System.out.println("Promo $ display on screen is-"+Actual_promo_qty);
+				if(Actual_promo_qty.equals("2.000"))
+				{
+					System.out.println("Test case 22 Pass-Promo qty value is correctly display");
+			}
+				else
+				{
+					System.out.println("Test case 22 fail-Incorrect Promo qty value display");	
+				}
+			}
+			catch(Exception e)
+			   {
+				System.out.println("Test case 22 fail-Incorrect Promo qty value display");	
+			   }	
+	}
+	private static void check_promo() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+			   String Actual_promo=driver.findElement(By.id("com.company.shelflabelsQA:id/tvpromo2")).getText();
+				System.out.println("Promo $ display on screen is-"+Actual_promo);
+				if(Actual_promo.equals("24.00"))
+				{
+					System.out.println("Test case 21 Pass-Promo $ value is correctly display");
+			}
+				else
+				{
+					System.out.println("Test case 21 fail-Incorrect Promo $ value display");	
+				}
+			}
+			catch(Exception e)
+			   {
+				System.out.println("Test case 21 fail-Incorrect Promo $ value display");	
+			   }		
+	}
+	private static void check_RSP() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+			   String Actual_RSP=driver.findElement(By.id("com.company.shelflabelsQA:id/tvrsp2")).getText();
+				System.out.println("RSP $ display on screen is-"+Actual_RSP);
+				if(Actual_RSP.equals("13.02"))
+				{
+					System.out.println("Test case 20 Pass-RSP $ value is correctly display");
+			}
+				else
+				{
+					System.out.println("Test case 20 fail-Incorrect RSP $ value display");	
+				}
+			}
+			catch(Exception e)
+			   {
+				System.out.println("Test case 20 fail-Incorrect RSP $ value display");	
+			   }		
+	}
+	private static void check_discount() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+			   String Actual_discount=driver.findElement(By.id("com.company.shelflabelsQA:id/tvDiscount2")).getText();
+				System.out.println("Discount % display on screen is-"+Actual_discount);
+				if(Actual_discount.equals("0"))
+				{
+					System.out.println("Test case19 Pass-%Discount value is correctly display");
+			}
+				else
+				{
+					System.out.println("Test case19 fail-Incorrect %Discount value display");	
+				}
+			}
+			catch(Exception e)
+			   {
+				System.out.println("Test case19 fail-Incorrect %Discount value display");	
+			   }	
+	}
+	private static void check_description() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+			   String Actual_des=driver.findElement(By.id("com.company.shelflabelsQA:id/tvDescription2")).getText();
+				System.out.println("Description display on screen is-"+Actual_des);
+				if(Actual_des.equals("GRANOLA CC&BANANA    450G"))
+				{
+					System.out.println("Test case18 Pass-Description is correctly display");
+			}
+				else
+				{
+					System.out.println("Test case18 fail-Incorrect Description display");	
+				}
+			}
+			catch(Exception e)
+			   {
+				System.out.println("Test case18 fail-Incorrect Description display");	
+			   }
+	}
+	private static void check_brand() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+			   String Actual_brand_name=driver.findElement(By.id("com.company.shelflabelsQA:id/tvBrand2")).getText();
+				System.out.println("Brand name display on screen is-"+Actual_brand_name);
+				if(Actual_brand_name.equals("CALBEE"))
+				{
+					System.out.println("Test case17 Pass-Brand name is correctly display");
+			}
+				else
+				{
+					System.out.println("Test case17 fail-Incorrect brand name display");	
+				}
+			}
+			catch(Exception e)
+			   {
+				System.out.println("Test case17 fail-Incorrect brand name display");	
+			   }
+	}
+	private static void check_print_qty() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+			   String Actual_print_qty=driver.findElement(By.id("com.company.shelflabelsQA:id/etPrintQty2")).getText();
+				System.out.println("Print Qty display on screen is-"+Actual_print_qty);
+				if(Actual_print_qty.equals("5"))
+				{
+					System.out.println("Test case16 Pass-Print Qty is same as enter by user");
+			}
+				else
+				{
+					System.out.println("Test case16 fail-Print Qty is not same as enter by user");	
+				}
+			}
+			catch(Exception e)
+			   {
+				System.out.println("Test case16 fail-Print Qty is not same as enter by user");	
+			   }
+	}
+	private static void Print_qty_input() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+			   driver.findElement(By.id("com.company.shelflabelsQA:id/etPrintQty2")).clear();
+				driver.findElement(By.id("com.company.shelflabelsQA:id/etPrintQty2")).sendKeys("5");
+					System.out.println("Test case15 Pass-User successfully enter Print qty as 5");
+			}
+			catch(Exception e)
+			   {
+				   System.out.println("Test case15 fail- Print Qty is not enter");
+			   }
+	}
+	private static void Print_qty_one() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+				String print_qty=driver.findElement(By.id("com.company.shelflabelsQA:id/etPrintQty2")).getText();
+				System.out.println("Print qty display bedefault is - "+print_qty);
+				if(print_qty.equals("1"))
+				{
+					System.out.println("Test case14 Pass- Print qty display as 1 ");	
+				}
+				else {
+					System.out.println("Test case14 fail- Print Qty is not display as 1, print qty on screen is- "+print_qty);
+				}
+			}
+			catch(Exception e)
+			   {
+				   System.out.println("Test case14 fail- Print Qty is not display");
+			   }
+	}
+	private static void promo_qty() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+				String promo_qty=driver.findElement(By.id("com.company.shelflabelsQA:id/tvpromoQty2")).getText();
+				System.out.println("promo Qty-"+promo_qty);
+				System.out.println("Test case13 Pass- promo Qty display ");
+			}
+			catch(Exception e)
+			   {
+				   System.out.println("Test case13 fail- promo Qty not found");
+			   }
+	}
+	private static void promo() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+				String promo=driver.findElement(By.id("com.company.shelflabelsQA:id/tvpromo2")).getText();
+				System.out.println("promo-"+promo);
+				System.out.println("Test case12 Pass- promo display ");
+			}
+			catch(Exception e)
+			   {
+				   System.out.println("Test case12 fail- promo not found");
+			   }
+	}
+	private static void discount() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+				String discount=driver.findElement(By.id("com.company.shelflabelsQA:id/tvDiscount2")).getText();
+				System.out.println("% Discount-"+discount);
+				System.out.println("Test case11 Pass- discount display ");
+			}
+			catch(Exception e)
+			   {
+				   System.out.println("Test case11 fail- discount not found");
+			   }
+	}
+	private static void RSP() {
+		// TODO Auto-generated method stub
+		   try
+			{
+			   Thread.sleep(5000);
+				String RSP=driver.findElement(By.id("com.company.shelflabelsQA:id/tvrsp2")).getText();
+				System.out.println("RSP-"+RSP);
+				System.out.println("Test case10 Pass- RSP display ");
+			}
+			catch(Exception e)
+			   {
+				   System.out.println("Test case10 fail- RSP not found");
+			   }	
+	}
+	private static void Description() throws InterruptedException {
+		// TODO Auto-generated method stub
+		   Thread.sleep(5000);
+		   try
+			{
+				String des_name=driver.findElement(By.id("com.company.shelflabelsQA:id/tvDescription2")).getText();
+				System.out.println("Description-"+des_name);
+				System.out.println("Test case9 Pass- Description  display ");
+			}
+			catch(Exception e)
+			   {
+				   System.out.println("Test case9 fail- Description not found");
+			   }	
+	}
+	private static void Brand() throws InterruptedException {
+		// TODO Auto-generated method stub
+		   Thread.sleep(5000);
+		   try
+			{
+				String brand_name=driver.findElement(By.id("com.company.shelflabelsQA:id/tvBrand2")).getText();
+				System.out.println("Brand name-"+brand_name);
+				System.out.println("Test case8 Pass- Brand name display ");
+			}
+			catch(Exception e)
+			   {
+				   System.out.println("Test case8 fail- Brand name is not found");
+			   }	
+	}
+	private static void Display_all() throws InterruptedException {
+		// TODO Auto-generated method stub
+		   Thread.sleep(5000);
+		   try
+			{
+				driver.findElement(By.id("com.company.shelflabelsQA:id/text1")).click();
+				System.out.println("Test case7 Pass- Click on All type ");
+			}
+			catch(Exception e)
+			   {
+				   System.out.println("Test case7 fail- Can't Click on All");
+			   }	
+	}
+	private static void display_click() throws InterruptedException {
+		// TODO Auto-generated method stub
+		Thread.sleep(5000);
+		try
+		{
+			driver.findElement(By.id("com.company.shelflabelsQA:id/tvSpinner")).click();
+			System.out.println("Test case6 Pass- Click on dropdowm button");
+		}
+		catch(Exception e)
+		   {
+			   System.out.println("Test case6 fail- Can't Click on dropdowm button");
+		   }
+	}
+	private static void next_input() {
+		// TODO Auto-generated method stub
+		try
+		{
+			driver.findElement(By.id("com.company.shelflabelsQA:id/etBarcodeSku")).click();
+			driver.executeScript("mobile:performEditorAction", ImmutableMap.of("action", "Next"));
+		System.out.println("Test case5 pass- User successfully click on next button");
+		}
+		catch(Exception e)
+		   {
+			   System.out.println("Test case5 fail- Can't find next button");
+		   }
+	}
+	//function to verify user is on Home page
+	   private static void Home_test() throws InterruptedException {
+		// TODO Auto-generated method stub
+		  // boolean errorMsg_Actual= driver.findElement(By.xpath("(//android.widget.TextView[contains(text(),'Shelf Labels')])[1]")).isDisplayed();
+	Thread.sleep(5000);
+		   try
+	{
+		WebElement app_name_path=driver.findElement(By.className("android.widget.TextView"));
+		Thread.sleep(4000);
+		String app_name=app_name_path.getText();
+		String Msg_Expected="Shelf Labels";
+		System.out.println("App name is -"+app_name);
+		Thread.sleep(2000);
+		try
+		{
+			if(app_name.equals(Msg_Expected))
+			{
+				System.out.println("Test Case1 pass -User is on Home page 3");
+			}
+			else
+			{
+				System.out.println("Test Case1 fail -User is not on Home page");	
+			}
+		}
+		catch (Error e)
+		{
+			System.out.println("Test Case1 fail -User is not on Home page");
+		}	
+		//System.out.println("Test case1 pass- User is on Home page");
+	}
+	 catch(Exception e)
+	   {
+		   System.out.println("Test case1 fail- User is not on Home page");
+	   }
+	
+	   }
+	// function for verify correct barcode enter 
+	   private static void Barcode_check() {
+		// TODO Auto-generated method stub
+	String barcode=driver.findElement(By.id("com.company.shelflabelsQA:id/etBarcodeSku")).getText();
+	System.out.println(barcode);
+	String barcode_input = "13181831";
+	if(barcode.equals(barcode_input))
+	{
+		System.out.println("Test case4 pass -Correct barcode display");
+	}
+	else
+	{
+		System.out.println("Test case4 fail- Incorrect barcode");
+	}
+	}
+	//Enter barcode function
+	   private static void Barcode_input() {
+		// TODO Auto-generated method stub
+		   try {
+				 Thread.sleep(3000);
+				 driver.findElement(By.id("com.company.shelflabelsQA:id/etBarcodeSku")).sendKeys("13181831");
+				   System.out.println("Test case 3 pass -User enter barcode successfully");
+				   }
+				   catch(Exception e)
+				   {
+					   System.out.println("Test case3 fail- barcode path not found");
+				   }
+	}
+	//Function for verify app name 
+	   static void store_name_id()
+	   {
+		 //Print Store id and name
+		   try {
+		 Thread.sleep(3000);
+		System.out.println(driver.findElement(By.id("com.company.shelflabelsQA:id/tvStoreId")).getText());
+		   System.out.println("Test case 2 pass- Store name path  found");  
+		   }
+		   catch(Exception e)
+		   {
+			   System.out.println("Test case 2 fail- Store name path not found");
+		   }   
+	   }
+}
